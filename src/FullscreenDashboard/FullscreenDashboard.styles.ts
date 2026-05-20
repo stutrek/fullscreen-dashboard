@@ -1,32 +1,32 @@
 import { css } from 'preact-homeassistant';
 
 css`
-  .__CARD_TAG__ {
+  .fullscreen-dashboard {
     padding: 16px;
     font-family: var(--primary-font-family, sans-serif);
   }
 
-  .__CARD_TAG____heading {
+  .fullscreen-dashboard__heading {
     font-size: 1.1em;
     font-weight: 600;
     margin: 0 0 4px;
     color: var(--primary-text-color, inherit);
   }
 
-  .__CARD_TAG____entity-id {
+  .fullscreen-dashboard__entity-id {
     font-size: 0.85em;
     color: var(--secondary-text-color, #888);
     margin: 0 0 12px;
   }
 
-  .__CARD_TAG____state {
+  .fullscreen-dashboard__state {
     font-size: 1.6em;
     font-weight: 500;
     margin: 0 0 12px;
     color: var(--primary-text-color, inherit);
   }
 
-  .__CARD_TAG____attributes {
+  .fullscreen-dashboard__attributes {
     font-family: var(--code-font-family, 'SF Mono', Menlo, monospace);
     font-size: 0.8em;
     line-height: 1.4;
@@ -38,7 +38,7 @@ css`
     color: var(--primary-text-color, inherit);
   }
 
-  .__CARD_TAG____empty {
+  .fullscreen-dashboard__empty {
     padding: 16px;
     color: var(--secondary-text-color, #888);
     font-style: italic;

@@ -1,5 +1,5 @@
 {
-  "name": "__CARD_NAME__",
+  "name": "Fullscreen Dashboard",
   "render_readme": true,
-  "filename": "__CARD_TAG__.js"
+  "filename": "fullscreen-dashboard.js"
 }
