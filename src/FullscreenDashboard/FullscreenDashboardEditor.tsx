@@ -8,9 +8,5 @@ interface EditorProps {
 }
 
 export function FullscreenDashboardEditor(_props: EditorProps) {
-  return (
-    <div class="fullscreen-dashboard-editor">
-      No configuration needed.
-    </div>
-  );
+  return <div class="fullscreen-dashboard-editor">No configuration needed.</div>;
 }

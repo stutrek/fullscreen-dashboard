@@ -4,9 +4,21 @@ import { FullscreenDashboard } from './FullscreenDashboard';
 
 describe('FullscreenDashboard', () => {
   beforeEach(() => {
-    Object.defineProperty(document, 'fullscreenElement', { value: null, writable: true, configurable: true });
-    Object.defineProperty(document.documentElement, 'requestFullscreen', { value: vi.fn(), writable: true, configurable: true });
-    Object.defineProperty(document, 'exitFullscreen', { value: vi.fn(), writable: true, configurable: true });
+    Object.defineProperty(document, 'fullscreenElement', {
+      value: null,
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(document.documentElement, 'requestFullscreen', {
+      value: vi.fn(),
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(document, 'exitFullscreen', {
+      value: vi.fn(),
+      writable: true,
+      configurable: true,
+    });
   });
 
   it('renders a fullscreen button', () => {
@@ -21,7 +33,10 @@ describe('FullscreenDashboard', () => {
   });
 
   it('calls exitFullscreen when already fullscreen', () => {
-    Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement, configurable: true });
+    Object.defineProperty(document, 'fullscreenElement', {
+      value: document.documentElement,
+      configurable: true,
+    });
     render(<FullscreenDashboard config={{}} />);
     fireEvent.click(screen.getByTitle('Exit fullscreen'));
     expect(document.exitFullscreen).toHaveBeenCalled();

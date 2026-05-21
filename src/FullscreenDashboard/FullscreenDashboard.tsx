@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import './FullscreenDashboard.styles';
 
-export interface FullscreenDashboardConfig {}
+export type FullscreenDashboardConfig = {};
 
 function findHuiViewContainer(): Element | null {
   function search(root: Document | ShadowRoot): Element | null {
@@ -50,6 +50,7 @@ export function FullscreenDashboard(_props: { config: FullscreenDashboardConfig 
   return (
     <ha-card>
       <button
+        type="button"
         class="fullscreen-dashboard-btn"
         onClick={toggle}
         title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
