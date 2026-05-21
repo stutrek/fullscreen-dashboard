@@ -1,48 +1,29 @@
-import { render, screen } from '@testing-library/preact';
-import { HAProvider } from 'preact-homeassistant';
-import { beforeEach, describe, expect, it } from 'vitest';
-import { createMockHass, noopSubscribe } from '../__test-utils__/mockHass';
+import { fireEvent, render, screen } from '@testing-library/preact';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FullscreenDashboard } from './FullscreenDashboard';
 
 describe('FullscreenDashboard', () => {
   beforeEach(() => {
-    localStorage.clear();
+    Object.defineProperty(document, 'fullscreenElement', { value: null, writable: true, configurable: true });
+    Object.defineProperty(document.documentElement, 'requestFullscreen', { value: vi.fn(), writable: true, configurable: true });
+    Object.defineProperty(document, 'exitFullscreen', { value: vi.fn(), writable: true, configurable: true });
   });
 
-  it('shows the entity name and state when configured', () => {
-    const hass = createMockHass({
-      entities: {
-        'sensor.temperature': {
-          entity_id: 'sensor.temperature',
-          state: '72',
-          attributes: {
-            friendly_name: 'Living Room Temperature',
-            unit_of_measurement: '°F',
-          },
-        },
-      },
-    });
-
-    render(
-      <HAProvider hass={hass} subscribeToEntity={noopSubscribe}>
-        <FullscreenDashboard config={{ entity: 'sensor.temperature' }} />
-      </HAProvider>,
-    );
-
-    expect(screen.getByText('Living Room Temperature')).toBeTruthy();
-    expect(screen.getByText('sensor.temperature')).toBeTruthy();
-    expect(screen.getByText(/72\s*°F/)).toBeTruthy();
+  it('renders a fullscreen button', () => {
+    render(<FullscreenDashboard config={{}} />);
+    expect(screen.getByTitle('Enter fullscreen')).toBeTruthy();
   });
 
-  it('shows a helpful message when no entity is configured', () => {
-    const hass = createMockHass();
+  it('calls requestFullscreen when not fullscreen', () => {
+    render(<FullscreenDashboard config={{}} />);
+    fireEvent.click(screen.getByTitle('Enter fullscreen'));
+    expect(document.documentElement.requestFullscreen).toHaveBeenCalled();
+  });
 
-    render(
-      <HAProvider hass={hass} subscribeToEntity={noopSubscribe}>
-        <FullscreenDashboard config={{ entity: '' }} />
-      </HAProvider>,
-    );
-
-    expect(screen.getByText(/No entity configured/)).toBeTruthy();
+  it('calls exitFullscreen when already fullscreen', () => {
+    Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement, configurable: true });
+    render(<FullscreenDashboard config={{}} />);
+    fireEvent.click(screen.getByTitle('Exit fullscreen'));
+    expect(document.exitFullscreen).toHaveBeenCalled();
   });
 });

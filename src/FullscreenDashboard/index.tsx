@@ -5,8 +5,8 @@ import { FullscreenDashboardEditor } from './FullscreenDashboardEditor';
 registerPreactCard<FullscreenDashboardConfig>({
   type: 'fullscreen-dashboard',
   name: 'Fullscreen Dashboard',
-  description: 'A starter card that displays a sensor entity and its attributes',
+  description: 'A button that toggles fullscreen mode for the entire dashboard',
   Component: FullscreenDashboard,
   ConfigComponent: FullscreenDashboardEditor,
-  getStubConfig: () => ({ entity: '' }),
+  getStubConfig: () => ({ layout_options: { grid_columns: 2, grid_rows: 1 } }),
 });
