@@ -3,9 +3,9 @@ import './FullscreenDashboard.styles';
 
 export type FullscreenDashboardConfig = {};
 
-function findHuiViewContainer(): Element | null {
+function findDeep(selector: string): Element | null {
   function search(root: Document | ShadowRoot): Element | null {
-    const found = root.querySelector('hui-view-container');
+    const found = root.querySelector(selector);
     if (found) return found;
     for (const el of root.querySelectorAll('*')) {
       const sr = (el as Element & { shadowRoot?: ShadowRoot }).shadowRoot;
@@ -19,20 +19,17 @@ function findHuiViewContainer(): Element | null {
   return search(document);
 }
 
+function findHuiViewContainer(): Element | null {
+  return findDeep('hui-view-container');
+}
+
 function findHaHeader(): Element | null {
-  function search(root: Document | ShadowRoot): Element | null {
-    const found = root.querySelector('app-header');
-    if (found) return found;
-    for (const el of root.querySelectorAll('*')) {
-      const sr = (el as Element & { shadowRoot?: ShadowRoot }).shadowRoot;
-      if (sr) {
-        const r = search(sr);
-        if (r) return r;
-      }
-    }
-    return null;
-  }
-  return search(document);
+  // Modern HA renders the dashboard toolbar as `.header` inside hui-root's
+  // shadow root (a fixed-position bar). Older HA used a top-level <app-header>.
+  // Scope the `.header` lookup to hui-root so we don't grab an unrelated
+  // `.header` from a dialog or another component.
+  const huiRoot = findDeep('hui-root') as (Element & { shadowRoot?: ShadowRoot }) | null;
+  return huiRoot?.shadowRoot?.querySelector('.header') ?? findDeep('app-header');
 }
 
 function applyFakeFullscreenStyles() {
@@ -79,7 +76,13 @@ export function FullscreenDashboard(_props: { config: FullscreenDashboardConfig 
       }
     };
     document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+    return () => {
+      document.removeEventListener('keydown', handler);
+      // If the card unmounts (e.g. dashboard navigation) while faking
+      // fullscreen, restore the header/padding so the dashboard isn't left
+      // permanently chromeless. Idempotent with the explicit calls above.
+      removeFakeFullscreenStyles();
+    };
   }, [isFakeFullscreen]);
 
   const toggle = () => {

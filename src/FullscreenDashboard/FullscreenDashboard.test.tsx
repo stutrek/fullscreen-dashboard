@@ -67,6 +67,35 @@ describe('FullscreenDashboard', () => {
     document.body.removeChild(container);
   });
 
+  it('hides the modern hui-root .header (not app-header) in fake fullscreen', () => {
+    // Modern HA has no <app-header>; the toolbar is `.header` inside hui-root's
+    // shadow root. This is the case the original code missed.
+    Object.defineProperty(document, 'fullscreenEnabled', {
+      value: false,
+      configurable: true,
+    });
+    const huiRoot = document.createElement('hui-root');
+    const shadow = huiRoot.attachShadow({ mode: 'open' });
+    const header = document.createElement('div');
+    header.className = 'header';
+    shadow.appendChild(header);
+    document.body.appendChild(huiRoot);
+    const container = document.createElement('hui-view-container');
+    document.body.appendChild(container);
+
+    render(<FullscreenDashboard config={{}} />);
+    fireEvent.click(screen.getByTitle('Enter fullscreen'));
+
+    expect(header.style.getPropertyValue('display')).toBe('none');
+    expect(container.style.getPropertyValue('padding')).toBe('0px');
+
+    fireEvent.click(screen.getByTitle('Exit fullscreen'));
+    expect(header.style.getPropertyValue('display')).toBe('');
+
+    document.body.removeChild(huiRoot);
+    document.body.removeChild(container);
+  });
+
   it('restores header and padding when exiting fake fullscreen', () => {
     Object.defineProperty(document, 'fullscreenEnabled', {
       value: false,
