@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stutrek/preact-homeassistant-template.git"
+    "url": "git+https://github.com/stutrek/fullscreen-dashboard.git"
   },
   "license": "MIT",
   "type": "module",
