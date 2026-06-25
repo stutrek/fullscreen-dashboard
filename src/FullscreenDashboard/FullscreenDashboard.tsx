@@ -1,3 +1,4 @@
+import { HACard } from 'preact-homeassistant';
 import { useEffect, useState } from 'preact/hooks';
 import './FullscreenDashboard.styles';
 
@@ -109,7 +110,7 @@ export function FullscreenDashboard(_props: { config: FullscreenDashboardConfig 
   const active = isFullscreen || isFakeFullscreen;
 
   return (
-    <ha-card>
+    <HACard>
       <button
         type="button"
         class="fullscreen-dashboard-btn"
@@ -118,6 +119,6 @@ export function FullscreenDashboard(_props: { config: FullscreenDashboardConfig 
       >
         <ha-icon icon={active ? 'mdi:fullscreen-exit' : 'mdi:fullscreen'} />
       </button>
-    </ha-card>
+    </HACard>
   );
 }
