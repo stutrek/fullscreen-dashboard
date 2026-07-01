@@ -110,7 +110,7 @@ export function FullscreenDashboard(_props: { config: FullscreenDashboardConfig 
   const active = isFullscreen || isFakeFullscreen;
 
   return (
-    <HACard>
+    <HACard align="center">
       <button
         type="button"
         class="fullscreen-dashboard-btn"
